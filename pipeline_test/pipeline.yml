@@ -1,0 +1,19 @@
+ressource_type:
+  - name: webhook
+    type: registry-image
+    source:
+      repository: batlefroc/concourse-discord
+      tag: latest
+
+ressource:
+  - name: discourd
+    type: webhook
+    icon: bell
+    source:
+      webhook: https://discord.com/api/webhooks/902523987391819806/WoGNHGGJWaXW37PldOTlFQc-nyjZ8HA8Bz7xQl-yYAAX3lBSi1cwcnt39RloZ4DlnmKn
+
+jobs:
+  - name: test_webhook
+    public: true
+    plan:
+      - put: discourd
