@@ -1,0 +1,20 @@
+#! /usr/bin/env node
+const webhook = require("webhook-discord");
+const { getStdinAsJson, getColor } = require("./common.js");
+async function out() {
+  try {
+    var conf = await getStdinAsJson();
+    const Hook = new webhook.Webhook(conf.source.webhook);
+    const msg = new webhook.MessageBuilder()
+      .setName("WeeboCI")
+      .setTime(Date.now())
+      .setColor(getColor(conf.status))
+      .setTitle()
+      .setText("This is my webhook!");
+    Hook.send(msg);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+out();

@@ -1,0 +1,6 @@
+**/examples/
+**/node_modules/
+**/output_dir
+**/*parameters.yml
+**/*.log
+node_modules

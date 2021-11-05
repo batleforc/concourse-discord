@@ -1,0 +1,12 @@
+#! /usr/bin/env node
+
+/**
+ * This is the main function
+ * Read source configuration from stdin and then runs a graphQL query
+ * to fetch MERGED or CLOSED pull requests
+ */
+async function check() {
+  console.log(JSON.stringify([]));
+}
+
+check();

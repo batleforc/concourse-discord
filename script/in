@@ -1,0 +1,41 @@
+#! /usr/bin/env node
+
+const { getStdinAsJson } = require("./common.js");
+
+/*
+ * Main function for in script. Given a version will output
+ * under targetDir to pull_request file
+ */
+async function doIn() {
+  try {
+    if (process.argv.length != 3) {
+      throw new Error("No output directory specified on $1!");
+    }
+
+    // output directory
+    let targetDir = process.argv[2];
+    if (targetDir[targetDir.length - 1] != "/") {
+      targetDir += "/";
+    }
+
+    // get stdin and extract the .version
+    let rawJson = await getStdinAsJson();
+    let version = rawJson["version"];
+    if (!version) {
+      throw new Error("No version inside of stdin");
+    }
+
+    outputVersionToFile(targetDir, version);
+
+    // output the version to stdout
+    console.log(
+      JSON.stringify({
+        version: version,
+      })
+    );
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+doIn();
