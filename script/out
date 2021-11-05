@@ -9,12 +9,13 @@ async function out() {
       .setName("WeeboCI")
       .setTime(Date.now())
       .setColor(getColor(conf.status))
-      .setTitle()
+      .setTitle("test")
       .setText("This is my webhook!");
     Hook.send(msg);
   } catch (e) {
     console.log(e);
   }
+  console.log(conf);
 }
 
 out();
