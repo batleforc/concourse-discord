@@ -1,6 +1,6 @@
 FROM node:17-alpine
 
-ADD scripts/ /opt/resource/
+ADD script/ /opt/resource/
 
 RUN cd /opt/resource && yarn install
 
