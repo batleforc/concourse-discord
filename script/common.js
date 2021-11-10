@@ -1,5 +1,4 @@
-const stdin = require("get-stdin");
-
+import stdin from "get-stdin";
 /**
  * This function simply parses STDIN to JSON
  */

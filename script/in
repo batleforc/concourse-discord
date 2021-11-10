@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-const { getStdinAsJson } = require("./common.js");
+import { getStdinAsJson } from "./common.js";
 
 /*
  * Main function for in script. Given a version will output
