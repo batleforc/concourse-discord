@@ -1,4 +1,4 @@
-FROM node:14.18.1-buster
+FROM node:10.16.0-buster
 
 ADD script/ /opt/resource/
 RUN chmod -R 777 /opt/resource

@@ -1,6 +1,6 @@
 #! /usr/bin/env node
-const webhook = import("webhook-discord");
-import stdin from "get-stdin";
+const webhook = require("webhook-discord");
+const stdin = require("get-stdin");
 async function getStdinAsJson() {
   var result;
   console.log(stdin);
