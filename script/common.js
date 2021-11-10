@@ -1,4 +1,5 @@
-import { stdin } from "get-stdin";
+const stdin = import("get-stdin");
+
 /**
  * This function simply parses STDIN to JSON
  */
