@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-const stdin = require("get-stdin");
+const stdin = import("get-stdin");
 async function getStdinAsJson() {
   var result;
   console.log(stdin);
