@@ -1,6 +1,6 @@
 #! /usr/bin/env node
-import { getStdinAsJson, getColor } from "./common.js";
-import webhook from "webhook-discord";
+const webhook = require("webhook-discord");
+const { getStdinAsJson, getColor } = require("./common.js");
 async function out() {
   try {
     var conf = await getStdinAsJson();
