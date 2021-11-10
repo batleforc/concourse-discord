@@ -6,7 +6,7 @@ const stdin = import("get-stdin");
 async function getStdinAsJson() {
   var result;
   try {
-    result = JSON.parse(await stdin());
+    result = JSON.parse(await stdin.getStdin());
   } catch (err) {
     console.error("Error thrown during parsing stdin!");
     throw err;
