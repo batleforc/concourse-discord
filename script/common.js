@@ -1,4 +1,4 @@
-const stdin = import("get-stdin");
+const stdin = require("get-stdin");
 
 /**
  * This function simply parses STDIN to JSON
@@ -6,7 +6,7 @@ const stdin = import("get-stdin");
 async function getStdinAsJson() {
   var result;
   try {
-    result = JSON.parse(await stdin.getStdin());
+    result = JSON.parse(await stdin());
   } catch (err) {
     console.error("Error thrown during parsing stdin!");
     throw err;
