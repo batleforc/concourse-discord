@@ -1,10 +1,10 @@
-const stdin = import("get-stdin");
-
+import * as stdin from "get-stdin";
 /**
  * This function simply parses STDIN to JSON
  */
 async function getStdinAsJson() {
   var result;
+  console.log(stdin);
   try {
     result = JSON.parse(await stdin());
   } catch (err) {
