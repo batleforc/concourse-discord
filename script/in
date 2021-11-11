@@ -46,5 +46,10 @@ async function doIn() {
     console.error(err);
   }
 }
-console.log(JSON.stringify({}));
+console.log(
+  JSON.stringify({
+    version: { ref: process.env.BUILD_ID },
+    metadata: [],
+  })
+);
 //doIn();
