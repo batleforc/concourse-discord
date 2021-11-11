@@ -65,7 +65,12 @@ async function out() {
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" },
     });
-    console.log(JSON.parse({ value: "ALL IS GREEN" }));
+    console.log(
+      JSON.stringify({
+        version: { ref: process.env.BUILD_ID },
+        metadata: [],
+      })
+    );
   } catch (e) {
     console.log(JSON.stringify([]));
   }
