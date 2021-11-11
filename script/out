@@ -76,7 +76,7 @@ async function out() {
       })
     );
   } catch (e) {
-    console.log(JSON.stringify(e));
+    console.log(JSON.stringify({ error: e, var: { body: body, conf: conf } }));
   }
 }
 
