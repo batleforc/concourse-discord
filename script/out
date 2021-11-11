@@ -42,7 +42,7 @@ async function out() {
           description: `${conf.params.scan ? "Scan" : "Deploy"} ${
             conf.params.env
           }`,
-          url: "https://ci.weebo.fr",
+          url: `https://ci.weebo.fr/teams/${process.env.BUILD_TEAM_NAME}/pipeline/${process.env.BUILD_PIPELINE_NAME}`,
           color: getColor(conf.params.status),
           fields: [
             {
@@ -63,11 +63,12 @@ async function out() {
       ],
     };
 
-    fetch(conf.source.webhook, {
+    const response = await fetch(conf.source.webhook, {
       method: "post",
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" },
     });
+    console.log(response);
   } catch (e) {
     console.log("3", e);
   }
