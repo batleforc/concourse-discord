@@ -1,2 +1,74 @@
 #! /usr/bin/env node
-console.log(JSON.stringify([]));
+
+const fetch = require("node-fetch");
+const getStdin = require("get-stdin");
+
+async function getStdinAsJson() {
+  var result;
+  try {
+    var truc = await getStdin();
+    result = JSON.parse(truc);
+  } catch (err) {
+    console.error(
+      JSON.stringify({ string: "Error thrown during parsing stdin!" })
+    );
+    throw err;
+  }
+  return result;
+}
+
+function getColor(value) {
+  switch (String(value).toLowerCase()) {
+    case "success":
+      return 1721108;
+    case "failed":
+    case "errored":
+    case "aborted":
+      return 8388608;
+    default:
+      return 16777215;
+  }
+}
+
+async function out() {
+  try {
+    var conf = await getStdinAsJson();
+    var body = {
+      embeds: [
+        {
+          title: `[${conf.source.app}]-[${conf.params.env}]`,
+          description: `${conf.params.scan ? "Scan" : "Deploy"} ${
+            conf.params.env
+          }`,
+          url: `https://ci.weebo.fr/teams/${process.env.BUILD_TEAM_NAME}/pipeline/${process.env.BUILD_PIPELINE_NAME}`,
+          color: getColor(conf.params.status),
+          fields: [
+            {
+              name: "Qube",
+              value: `https://${conf.source.sonarqube}/dashboard?id=${conf.params.env}-${conf.source.app}`,
+            },
+            {
+              name: "Deploy",
+              value: `https://${conf.source.projectname}${
+                conf.params.env === "dev" ? ".dev" : ""
+              }.${conf.source.domain}${conf.source.path}`,
+            },
+          ],
+          author: {
+            name: "Weebo CI",
+          },
+        },
+      ],
+    };
+    const response = await fetch(conf.source.webhook, {
+      method: "post",
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" },
+    });
+    console.log(JSON.parse({ value: "ALL IS GREEN" }));
+  } catch (e) {
+    console.log(JSON.stringify([]));
+  }
+}
+
+out();
