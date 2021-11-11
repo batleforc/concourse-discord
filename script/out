@@ -19,13 +19,13 @@ async function getStdinAsJson() {
 function getColor(value) {
   switch (String(value).toLowerCase()) {
     case "success":
-      return "1A4314";
+      return 1721108;
     case "failed":
     case "errored":
     case "aborted":
-      return "800000";
+      return 8388608;
     default:
-      return "FFFFFF";
+      return 16777215;
   }
 }
 
