@@ -37,7 +37,7 @@ async function getStdinAsJson() {
   var result;
   try {
     var truc = await getStdin();
-    console.log(truc);
+    console.log("1", truc);
     result = JSON.parse(truc);
   } catch (err) {
     console.error("Error thrown during parsing stdin!");
@@ -62,7 +62,7 @@ function getColor(value) {
 async function out() {
   try {
     var conf = await getStdinAsJson();
-    console.log(conf);
+    console.log("2", conf);
     const Hook = new webhook.Webhook(conf.source.webhook);
     const msg = new webhook.MessageBuilder()
       .setName("WeeboCI")
