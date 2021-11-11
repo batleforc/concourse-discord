@@ -45,7 +45,7 @@ async function out() {
           fields: [
             {
               name: "Qube",
-              value: `https://${conf.source.sonarqube}/dashboard?id=${conf.params.env}-${conf.source.app}`,
+              value: `https://${conf.source.sonarqube}/dashboard?id=${conf.params.env}-${conf.source.app}-${conf.source.projectname}`,
             },
             {
               name: "Deploy",
