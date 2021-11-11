@@ -1,50 +1,74 @@
 #! /usr/bin/env node
-const stdin = import("get-stdin");
+
+const fetch = require("node-fetch");
+const getStdin = require("get-stdin");
+
 async function getStdinAsJson() {
   var result;
-  console.log(stdin);
   try {
-    result = JSON.parse(await stdin());
+    var truc = await getStdin();
+    result = JSON.parse(truc);
   } catch (err) {
-    console.error("Error thrown during parsing stdin!");
+    console.error(
+      JSON.stringify({ string: "Error thrown during parsing stdin!" })
+    );
     throw err;
   }
   return result;
 }
-/*
- * Main function for in script. Given a version will output
- * under targetDir to pull_request file
- */
-async function doIn() {
-  try {
-    if (process.argv.length != 3) {
-      throw new Error("No output directory specified on $1!");
-    }
 
-    // output directory
-    let targetDir = process.argv[2];
-    if (targetDir[targetDir.length - 1] != "/") {
-      targetDir += "/";
-    }
-
-    // get stdin and extract the .version
-    let rawJson = await getStdinAsJson();
-    let version = rawJson["version"];
-    if (!version) {
-      throw new Error("No version inside of stdin");
-    }
-
-    outputVersionToFile(targetDir, version);
-
-    // output the version to stdout
-    console.log(
-      JSON.stringify({
-        version: version,
-      })
-    );
-  } catch (err) {
-    console.error(err);
+function getColor(value) {
+  switch (String(value).toLowerCase()) {
+    case "success":
+      return 1721108;
+    case "failed":
+    case "errored":
+    case "aborted":
+      return 8388608;
+    default:
+      return 16777215;
   }
 }
-console.log(JSON.stringify({}));
-//doIn();
+
+async function out() {
+  try {
+    var conf = await getStdinAsJson();
+    var body = {
+      embeds: [
+        {
+          title: `[${conf.source.app}]-[${conf.params.env}]`,
+          description: `${conf.params.scan ? "Scan" : "Deploy"} ${
+            conf.params.env
+          }`,
+          url: `https://ci.weebo.fr/teams/${process.env.BUILD_TEAM_NAME}/pipeline/${process.env.BUILD_PIPELINE_NAME}`,
+          color: getColor(conf.params.status),
+          fields: [
+            {
+              name: "Qube",
+              value: `https://${conf.source.sonarqube}/dashboard?id=${conf.params.env}-${conf.source.app}`,
+            },
+            {
+              name: "Deploy",
+              value: `https://${conf.source.projectname}${
+                conf.params.env === "dev" ? ".dev" : ""
+              }.${conf.source.domain}${conf.source.path}`,
+            },
+          ],
+          author: {
+            name: "Weebo CI",
+          },
+        },
+      ],
+    };
+    const response = await fetch(conf.source.webhook, {
+      method: "post",
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" },
+    });
+    console.log(JSON.parse({ value: "ALL IS GREEN" }));
+  } catch (e) {
+    console.log(JSON.stringify([]));
+  }
+}
+
+out();
