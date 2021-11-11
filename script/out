@@ -1,11 +1,44 @@
 #! /usr/bin/env node
 const webhook = require("webhook-discord");
-const stdin = require("get-stdin");
+const { stdin } = process;
+async function getStdin() {
+  let result = "";
+
+  if (stdin.isTTY) {
+    return result;
+  }
+
+  stdin.setEncoding("utf8");
+
+  for await (const chunk of stdin) {
+    result += chunk;
+  }
+
+  return result;
+}
+
+getStdin.buffer = async () => {
+  const result = [];
+  let length = 0;
+
+  if (stdin.isTTY) {
+    return Buffer.concat([]);
+  }
+
+  for await (const chunk of stdin) {
+    result.push(chunk);
+    length += chunk.length;
+  }
+
+  return Buffer.concat(result, length);
+};
+
 async function getStdinAsJson() {
   var result;
-  console.log(stdin);
   try {
-    result = JSON.parse(await stdin());
+    var truc = await getStdin();
+    console.log(truc);
+    result = JSON.parse(truc);
   } catch (err) {
     console.error("Error thrown during parsing stdin!");
     throw err;
@@ -29,6 +62,7 @@ function getColor(value) {
 async function out() {
   try {
     var conf = await getStdinAsJson();
+    console.log(conf);
     const Hook = new webhook.Webhook(conf.source.webhook);
     const msg = new webhook.MessageBuilder()
       .setName("WeeboCI")
@@ -40,7 +74,6 @@ async function out() {
   } catch (e) {
     console.log(e);
   }
-  console.log(conf);
 }
 
 out();
