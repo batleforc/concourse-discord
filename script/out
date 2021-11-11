@@ -67,7 +67,7 @@ async function out() {
     });
     console.log(
       JSON.stringify({
-        version: { ref: process.env.BUILD_ID },
+        version: { ref: process.env.BUILD_ID || 0 },
         metadata: [],
         var: {
           body: body,
