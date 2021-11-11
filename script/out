@@ -69,10 +69,14 @@ async function out() {
       JSON.stringify({
         version: { ref: process.env.BUILD_ID },
         metadata: [],
+        var: {
+          body: body,
+          conf: conf,
+        },
       })
     );
   } catch (e) {
-    console.log(JSON.stringify([]));
+    console.log(JSON.stringify(e));
   }
 }
 
