@@ -34,6 +34,7 @@ async function out() {
     var conf = await getStdinAsJson();
     console.log("2", conf);
     console.log(process.env);
+
     var body = {
       embeds: [
         {
@@ -61,7 +62,7 @@ async function out() {
         },
       ],
     };
-    console.log(body);
+    console.log(JSON.stringify(body));
     const response = await fetch(conf.source.webhook, {
       method: "post",
       body: JSON.stringify(body),
