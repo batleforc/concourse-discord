@@ -65,6 +65,7 @@ async function out() {
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" },
     });
+    console.log(JSON.parse({ value: "ALL IS GREEN" }));
   } catch (e) {
     console.log(JSON.stringify(e));
   }
