@@ -1,37 +1,7 @@
 #! /usr/bin/env node
-const webhook = require("webhook-discord");
-const { stdin } = process;
-async function getStdin() {
-  let result = "";
 
-  if (stdin.isTTY) {
-    return result;
-  }
-
-  stdin.setEncoding("utf8");
-
-  for await (const chunk of stdin) {
-    result += chunk;
-  }
-
-  return result;
-}
-
-getStdin.buffer = async () => {
-  const result = [];
-  let length = 0;
-
-  if (stdin.isTTY) {
-    return Buffer.concat([]);
-  }
-
-  for await (const chunk of stdin) {
-    result.push(chunk);
-    length += chunk.length;
-  }
-
-  return Buffer.concat(result, length);
-};
+const fetch = require("node-fetch");
+const getStdin = require("get-stdin");
 
 async function getStdinAsJson() {
   var result;
@@ -49,13 +19,13 @@ async function getStdinAsJson() {
 function getColor(value) {
   switch (String(value).toLowerCase()) {
     case "success":
-      return "#1A4314";
+      return "1A4314";
     case "failed":
     case "errored":
     case "aborted":
-      return "#800000";
+      return "800000";
     default:
-      return "#FFFFFF";
+      return "FFFFFF";
   }
 }
 
@@ -63,16 +33,43 @@ async function out() {
   try {
     var conf = await getStdinAsJson();
     console.log("2", conf);
-    const Hook = new webhook.Webhook(conf.source.webhook);
-    const msg = new webhook.MessageBuilder()
-      .setName("WeeboCI")
-      .setTime(Date.now())
-      .setColor(getColor(conf.status))
-      .setTitle("test")
-      .setText("This is my webhook!");
-    Hook.send(msg);
+    console.log(process.env);
+    var body = {
+      content: null,
+      embeds: [
+        {
+          title: `[${conf.source.app}]-[${conf.params.env}]`,
+          description: `${conf.params.scan ? "Scan" : "Deploy"} ${
+            conf.params.env
+          }`,
+          url: "https://ci.weebo.fr",
+          color: getColor(conf.params.status),
+          fields: [
+            {
+              name: "Qube",
+              value: `https://${conf.source.sonarqube}/dashboard?id=${conf.params.env}-${conf.source.app}`,
+            },
+            {
+              name: "Deploy",
+              value: `https://${conf.source.projectname}${
+                conf.params.env === "dev" ? ".dev" : ""
+              }.${conf.source.domain}${conf.source.path}`,
+            },
+          ],
+          author: {
+            name: "Weebo CI",
+          },
+        },
+      ],
+    };
+
+    fetch(conf.source.webhook, {
+      method: "post",
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (e) {
-    console.log(e);
+    console.log("3", e);
   }
 }
 

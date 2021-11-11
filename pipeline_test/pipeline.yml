@@ -12,6 +12,11 @@ resources:
     icon: bell
     source:
       webhook: https://discord.com/api/webhooks/902523987391819806/WoGNHGGJWaXW37PldOTlFQc-nyjZ8HA8Bz7xQl-yYAAX3lBSi1cwcnt39RloZ4DlnmKn
+      sonarqube: https://qube.weebo.fr
+      projectname: kakurezato
+      domain: weebo.fr
+      path: /api
+      app: api
 
 jobs:
   - name: test_webhook
@@ -32,3 +37,7 @@ jobs:
               - |
                 echo "test"
       - put: discourd
+        params:
+          status: success
+          scan: true
+          env: dev
