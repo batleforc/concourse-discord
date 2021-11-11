@@ -35,7 +35,6 @@ async function out() {
     console.log("2", conf);
     console.log(process.env);
     var body = {
-      content: null,
       embeds: [
         {
           title: `[${conf.source.app}]-[${conf.params.env}]`,
@@ -62,7 +61,7 @@ async function out() {
         },
       ],
     };
-
+    console.log(body);
     const response = await fetch(conf.source.webhook, {
       method: "post",
       body: JSON.stringify(body),
