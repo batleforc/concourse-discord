@@ -67,7 +67,7 @@ async function out() {
     });
     console.log(JSON.parse({ value: "ALL IS GREEN" }));
   } catch (e) {
-    console.log(JSON.stringify(e));
+    console.log(JSON.stringify([]));
   }
 }
 
