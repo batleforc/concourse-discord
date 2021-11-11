@@ -7,10 +7,11 @@ async function getStdinAsJson() {
   var result;
   try {
     var truc = await getStdin();
-    console.log("1", truc);
     result = JSON.parse(truc);
   } catch (err) {
-    console.error("Error thrown during parsing stdin!");
+    console.error(
+      JSON.stringify({ string: "Error thrown during parsing stdin!" })
+    );
     throw err;
   }
   return result;
@@ -32,9 +33,6 @@ function getColor(value) {
 async function out() {
   try {
     var conf = await getStdinAsJson();
-    console.log("2", conf);
-    console.log(process.env);
-
     var body = {
       embeds: [
         {
@@ -62,15 +60,13 @@ async function out() {
         },
       ],
     };
-    console.log(JSON.stringify(body));
     const response = await fetch(conf.source.webhook, {
       method: "post",
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" },
     });
-    console.log(response);
   } catch (e) {
-    console.log("3", e);
+    console.log(JSON.stringify(e));
   }
 }
 
