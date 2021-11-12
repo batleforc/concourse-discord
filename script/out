@@ -65,14 +65,6 @@ async function out() {
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" },
     });
-    console.log({
-      version: { ref: process.env.BUILD_ID || 0 },
-      metadata: [],
-      var: {
-        body: body,
-        conf: conf,
-      },
-    });
     console.log(
       JSON.stringify({
         version: { ref: process.env.BUILD_ID || 0 },
@@ -80,6 +72,7 @@ async function out() {
         var: {
           body: body,
           conf: conf,
+          response: response,
         },
       })
     );
