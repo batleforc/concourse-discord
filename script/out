@@ -38,7 +38,7 @@ async function out() {
         {
           title: `[${conf.source.app}]-[${conf.params.env}]`,
           description: `${conf.params.scan ? "Scan" : "Deploy"} ${
-            conf.params.env
+            conf.params.status
           }`,
           url: `https://ci.weebo.fr/teams/${process.env.BUILD_TEAM_NAME}/pipeline/${process.env.BUILD_PIPELINE_NAME}`,
           color: getColor(conf.params.status),
